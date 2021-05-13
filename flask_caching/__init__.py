@@ -537,7 +537,10 @@ class Cache(object):
 
                 cache_hash = str(cache_hash.hexdigest())
 
-                cache_key = request.path + cache_hash
+                if isinstance(key_prefix, str) and "%s" in key_prefix:
+                    cache_key = (key_prefix % request.path) + ":" + cache_hash
+                else:
+                    cache_key = request.path + ":" + cache_hash
 
                 return cache_key
 
